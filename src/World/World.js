@@ -12,22 +12,26 @@ import { OrbitControls } from 'three/addons/controls/OrbitControls.js'
 let camera;
 let renderer;
 let scene;
+let controls;
+let cube;
 
 class World {
   constructor(container) {
-    camera = createCamera();
+    camera = createCamera();    
     scene = createScene();
     renderer = createRenderer();    
 
     container.append(renderer.domElement);  
 
-    new OrbitControls(camera, renderer.domElement);
-
-    const cube = createCube();
+    cube = createCube();
 
     scene.add(cube);
 
     const resizer = new Resizer(container, camera, renderer);
+
+    // Permite controle da camera com mouse
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.listenToKeyEvents(window);
 
   }
 
