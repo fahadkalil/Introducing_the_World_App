@@ -4,8 +4,8 @@ class Floor {
     static createBoxFloor(width = 10, height = 10, depth = 0.4) {
         const geometry = new THREE.BoxGeometry(width, height, depth);
 
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xffffff
+        const material = new THREE.MeshStandardMaterial({
+            color: 'skyblue'
         });
 
         const mesh = new THREE.Mesh(geometry, material);

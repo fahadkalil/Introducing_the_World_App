@@ -1,4 +1,5 @@
 import { GUI } from 'dat.gui';
+import * as THREE from 'three';
 
 class GuiControls {
     constructor(datGui) {
@@ -38,19 +39,30 @@ class GuiControls {
         return cameraFolder;
     }
 
-    addLightFolder(light) {
+    addLightFolder(light, helper) {
         const initialLightPosition = light.position.clone();
-
-        const lightFolder = this.datGui.addFolder("Light");
+        let lightLabel = "Light";
+        if (light instanceof THREE.DirectionalLight) {
+            lightLabel += " (Directional)";
+        }
+        const lightFolder = this.datGui.addFolder(lightLabel);
+        lightFolder.add(light, "visible");
         lightFolder.add(light.position, "x", -10, 10);
         lightFolder.add(light.position, "y", -10, 10);
         lightFolder.add(light.position, "z", -10, 10);
+        lightFolder.add(light, "castShadow");
+        lightFolder.add(light, "intensity", 0, 1, 0.1);
 
         const controls = {
             resetLight: function () {
                 light.position.copy(initialLightPosition);                
             },
         };
+
+        if (helper !== null && helper !== undefined && helper !== "") {            
+            lightFolder.add(helper, 'visible').name('Mostrar Helper');
+        }
+        
 
         lightFolder.add(controls, 'resetLight').name('Resetar Luz');
         lightFolder.open();

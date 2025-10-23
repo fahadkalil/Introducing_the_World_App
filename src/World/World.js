@@ -24,19 +24,12 @@ let sphere;
 
 class World {
   constructor(container) {
-    camera = Camera.create();    
-    
-    scene = Scene.create();
-    // adiciona piso (floor) com altura
-    scene.add(Floor.createBoxFloor(10, 10, 0.4));
-
-    // iluminação
-    scene.add(Light.createDirectionalLight());
+    camera = Camera.create(); 
 
     renderer = Renderer.create();    
 
     container.append(renderer.domElement);  
-
+    
     cube = Cube.create();
     cube.position.x = 0;
     cube.position.y = 2;
@@ -46,6 +39,20 @@ class World {
     sphere.position.x = 0;
     sphere.position.y = 1;
     sphere.position.z = 4;
+    
+    scene = Scene.create();
+    // adiciona piso (floor) com altura
+    scene.add(Floor.createBoxFloor(10, 10, 0.4));
+
+    // iluminação
+    const light = Light.createDirectionalLight(-7.0, 6.0, -4.5);
+    const helper = Light.createDirectionalLightHelper(light, 5);
+
+    // iluminar um objeto específico
+    //light.target = sphere;
+
+    scene.add(light);
+    scene.add(helper);
 
     scene.add(cube);
     scene.add(sphere);
@@ -59,7 +66,7 @@ class World {
     // Mostra controle de propriedades na tela (dat.GUI)
     const guiControls = new GuiControls();
     guiControls.addCameraFolder(camera);
-    guiControls.addLightFolder(light);
+    guiControls.addLightFolder(light, helper);
   }
 
   render() {
