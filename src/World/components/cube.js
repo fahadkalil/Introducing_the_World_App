@@ -1,16 +1,19 @@
 import * as THREE from 'three';
 
-function createCube() {
-  // create a geometry
-  const geometry = new THREE.BoxGeometry(2, 2, 2);
+class Cube {
+  static create() {
+    // create a geometry
+    const geometry = new THREE.BoxGeometry(2, 2, 2);
 
-  // create a default (white) Basic material
-  const material = new THREE.MeshPhongMaterial();
+    // create a default (white) Basic material
+    const material = new THREE.MeshPhongMaterial();
 
-  // create a Mesh containing the geometry and material
-  const cube = new THREE.Mesh(geometry, material);
+    // create a Mesh containing the geometry and material
+    const mesh = new THREE.Mesh(geometry, material);
 
-  return cube;
+    return mesh;
+  }
 }
 
-export { createCube };
+
+export { Cube };

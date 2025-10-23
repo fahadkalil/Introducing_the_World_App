@@ -1,12 +1,15 @@
-import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GuiControls } from './systems/GuiControls.js';
 
-import { createCamera } from './components/camera.js';
-import { createCube } from './components/cube.js';
-import { createSphere } from './components/sphere.js';
-import { createScene } from './components/scene.js';
+import { Camera } from './components/Camera.js';
+import { Cube } from './components/Cube.js';
+import { Sphere } from './components/Sphere.js';
+import { Scene } from './components/Scene.js';
 
-import { createRenderer } from './systems/renderer.js';
+import { Floor } from './components/Floor.js';
+import { Light } from './components/Light.js';
+
+import { Renderer } from './systems/Renderer.js';
 import { Resizer } from './systems/Resizer.js';
 
 
@@ -21,18 +24,25 @@ let sphere;
 
 class World {
   constructor(container) {
-    camera = createCamera();    
-    scene = createScene();
-    renderer = createRenderer();    
+    camera = Camera.create();    
+    
+    scene = Scene.create();
+    // adiciona piso (floor) com altura
+    scene.add(Floor.createBoxFloor(10, 10, 0.4));
+
+    // iluminação
+    scene.add(Light.createDirectionalLight());
+
+    renderer = Renderer.create();    
 
     container.append(renderer.domElement);  
 
-    cube = createCube();
+    cube = Cube.create();
     cube.position.x = 0;
     cube.position.y = 2;
     cube.position.z = 0;
 
-    sphere = createSphere();
+    sphere = Sphere.create();
     sphere.position.x = 0;
     sphere.position.y = 1;
     sphere.position.z = 4;
@@ -42,10 +52,14 @@ class World {
 
     const resizer = new Resizer(container, camera, renderer);
 
-    // Permite controle da camera com mouse   
+    // Permite controle da camera com mouse e teclado  
     const controls = new OrbitControls(camera, renderer.domElement)
     controls.listenToKeyEvents(window);
 
+    // Mostra controle de propriedades na tela (dat.GUI)
+    const guiControls = new GuiControls();
+    guiControls.addCameraFolder(camera);
+    guiControls.addLightFolder(light);
   }
 
   render() {

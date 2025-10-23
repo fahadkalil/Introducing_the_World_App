@@ -1,19 +1,23 @@
 import * as THREE from "three";
 
-function createSphere() {
-  // create a geometry
-  const geometry = new THREE.SphereGeometry(0.7, 30, 30);
+class Sphere {
 
-  // create a default (white) Basic material
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    shininess: 50,
-  });
+  static create() {
+    // create a geometry
+    const geometry = new THREE.SphereGeometry(0.7, 30, 30);
 
-  // create a Mesh containing the geometry and material
-  const sphere = new THREE.Mesh(geometry, material);
+    // create a default (white) Basic material
+    const material = new THREE.MeshPhongMaterial({
+      color: 0xffffff,
+      shininess: 50,
+    });
 
-  return sphere;
+    // create a Mesh containing the geometry and material
+    const mesh = new THREE.Mesh(geometry, material);
+
+    return mesh;
+  }
 }
 
-export { createSphere };
+
+export { Sphere };
