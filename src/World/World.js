@@ -28,6 +28,9 @@ class World {
     container.append(renderer.domElement);  
 
     cube = createCube();
+    cube.position.x = 0;
+    cube.position.y = 2;
+    cube.position.z = 0;
 
     sphere = createSphere();
     sphere.position.x = 0;
