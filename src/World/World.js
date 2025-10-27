@@ -41,6 +41,12 @@ class World {
     sphere.position.z = 4;
     
     scene = Scene.create();
+    
+    Scene.setBackgroundColor(scene, 0x21272e);
+    
+    // adiciona grid de referência
+    //Scene.addGridHelper(scene, 10, 10);
+
     // adiciona piso (floor) com altura
     scene.add(Floor.createBoxFloor(10, 10, 0.4));
 
