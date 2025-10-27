@@ -7,9 +7,15 @@ class Scene {
     return scene;
   }
 
-  static setBackgroundColor(scene, color = 'lightgray') {
+  static setBackgroundColor(scene, color = 'lightgray') {    
     scene.background = new THREE.Color(color);
+    return scene;
+  }
 
+  static setBackgroundTexture(scene, url) {        
+    let texture = new THREE.TextureLoader().load(url);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    scene.background = texture;
     return scene;
   }
 

@@ -47,14 +47,18 @@ class World {
     sphere.position.y = 1;
     sphere.position.z = 4;
 
-    scene = Scene.create();
+    scene = Scene.create();  
+    
+    // Carregar imagem de fundo da cena    
+    Scene.setBackgroundTexture(scene, 'src/World/assets/textures/backgrounds/starry_night_sky.jpg');
+
+    // Setar cor de fundo da cena
+    //Scene.setBackgroundColor(scene, 0x21272e);
 
     // Agrupar elementos da cena para iluminação e sombras
     const mainGroup = new THREE.Group();
 
     scene.add(mainGroup);
-
-    //Scene.setBackgroundColor(scene, 0x21272e);
 
     // adiciona grid de referência
     //Scene.addGridHelper(scene, 10, 10);
