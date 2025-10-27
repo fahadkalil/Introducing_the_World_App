@@ -21,15 +21,19 @@ let scene;
 let controls;
 let cube;
 let sphere;
+let resizer;
 
 class World {
   constructor(container) {
-    camera = Camera.create(); 
+    camera = Camera.create();
+    renderer = Renderer.create();
+    container.append(renderer.domElement);
+    resizer = new Resizer(container, camera, renderer);
 
-    renderer = Renderer.create();    
+    // Permite controle da camera com mouse e teclado  
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.listenToKeyEvents(window);
 
-    container.append(renderer.domElement);  
-    
     cube = Cube.create();
     cube.position.x = 0;
     cube.position.y = 2;
@@ -39,11 +43,11 @@ class World {
     sphere.position.x = 0;
     sphere.position.y = 1;
     sphere.position.z = 4;
-    
+
     scene = Scene.create();
-    
+
     Scene.setBackgroundColor(scene, 0x21272e);
-    
+
     // adiciona grid de referência
     //Scene.addGridHelper(scene, 10, 10);
 
@@ -63,11 +67,8 @@ class World {
     scene.add(cube);
     scene.add(sphere);
 
-    const resizer = new Resizer(container, camera, renderer);
 
-    // Permite controle da camera com mouse e teclado  
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.listenToKeyEvents(window);
+
 
     // Mostra controle de propriedades na tela (dat.GUI)
     const guiControls = new GuiControls();
@@ -78,7 +79,7 @@ class World {
   render() {
     renderer.setAnimationLoop(() => {
       renderer.render(scene, camera);
-    });    
+    });
   }
 }
 

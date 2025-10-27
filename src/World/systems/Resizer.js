@@ -11,6 +11,12 @@ class Resizer {
 
     // set the pixel ratio (for mobile devices)
     renderer.setPixelRatio(window.devicePixelRatio);
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+    })
   }
 }
 
