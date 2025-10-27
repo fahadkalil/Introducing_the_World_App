@@ -39,36 +39,61 @@ class GuiControls {
         return cameraFolder;
     }
 
-    addLightFolder(light, helper) {
+    addLightFolder(light, helper = null) {
         const initialLightPosition = light.position.clone();
-        let lightLabel = "Light";
-        if (light instanceof THREE.DirectionalLight) {
-            lightLabel += " (Directional)";
-        }
-        const lightFolder = this.datGui.addFolder(lightLabel);
-        lightFolder.add(light, "visible");
-        lightFolder.add(light.position, "x", -10, 10);
-        lightFolder.add(light.position, "y", -10, 10);
-        lightFolder.add(light.position, "z", -10, 10);
-        lightFolder.add(light, "castShadow");
-        lightFolder.add(light, "intensity", 0, 1, 0.1);
+        let lightLabel = "Lights";
 
-        const controls = {
-            resetLight: function () {
-                light.position.copy(initialLightPosition);                
-            },
-        };
-
-        if (helper !== null && helper !== undefined && helper !== "") {            
-            lightFolder.add(helper, 'visible').name('Mostrar Helper');
-        }
+        const lightFolder = (this.datGui.__folders[lightLabel] === undefined) ? this.datGui.addFolder(lightLabel) : this.datGui.__folders[lightLabel];
         
+        const innerFolder = this.#getLightInnerFolder(light, lightFolder);
 
-        lightFolder.add(controls, 'resetLight').name('Resetar Luz');
+        // Common light properties
+        innerFolder.add(light, "visible");
+        innerFolder.add(light, "intensity", 0, 1, 0.1);
+
+        const colorSettings = {
+            color: light.color.getHex(),
+        };
+        
+        innerFolder.
+            addColor(colorSettings, "color")
+            .onChange((value) => {
+                light.color.set(value);
+            });
+
+
+        // Specific light properties
+        if (light instanceof THREE.DirectionalLight) {            
+            innerFolder.add(light.position, "x", -10, 10);
+            innerFolder.add(light.position, "y", -10, 10);
+            innerFolder.add(light.position, "z", -10, 10);
+            innerFolder.add(light, "castShadow");
+
+            const controls = {
+                resetLight: function () {
+                    light.position.copy(initialLightPosition);
+                }
+            };
+
+            innerFolder.add(controls, 'resetLight').name('Resetar Luz');
+            innerFolder.add(helper, 'visible').name('Mostrar Helper');                     
+        }
+
         lightFolder.open();
+        innerFolder.open();
 
         return lightFolder;
     }
+
+    #getLightInnerFolder(light, lightFolder) {        
+        if (light instanceof THREE.AmbientLight) {
+            return lightFolder.addFolder("Ambient Light");
+        } else if (light instanceof THREE.DirectionalLight) {
+            return lightFolder.addFolder("Directional Light");
+        }
+    }
+
+
 }
 
 

@@ -14,6 +14,7 @@ class Sphere {
 
     // create a Mesh containing the geometry and material
     const mesh = new THREE.Mesh(geometry, material);
+    mesh.castShadow = true;
 
     return mesh;
   }

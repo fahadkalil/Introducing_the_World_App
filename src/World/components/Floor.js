@@ -1,15 +1,17 @@
 import * as THREE from 'three';
 
 class Floor {
-    static createBoxFloor(width = 10, height = 10, depth = 0.4) {
+    static createBoxFloor(width = 10, height = 0.5, depth = 8, receiveShadow = true) {
         const geometry = new THREE.BoxGeometry(width, height, depth);
 
-        const material = new THREE.MeshStandardMaterial({
+        const material = new THREE.MeshPhongMaterial({
             color: 'skyblue'
         });
 
         const mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.x = -Math.PI / 2; // Rotate -90 degrees around the X-axis
+
+        mesh.receiveShadow = true;
 
         return mesh;
     }

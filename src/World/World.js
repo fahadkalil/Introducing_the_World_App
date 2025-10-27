@@ -1,3 +1,5 @@
+import * as THREE from "three";
+
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GuiControls } from './systems/GuiControls.js';
 
@@ -35,6 +37,7 @@ class World {
     controls.listenToKeyEvents(window);
 
     cube = Cube.create();
+    cube.material.color.set(0x0000ff);
     cube.position.x = 0;
     cube.position.y = 2;
     cube.position.z = 0;
@@ -46,34 +49,40 @@ class World {
 
     scene = Scene.create();
 
-    Scene.setBackgroundColor(scene, 0x21272e);
+    // Agrupar elementos da cena para iluminação e sombras
+    const mainGroup = new THREE.Group();
+
+    scene.add(mainGroup);
+
+    //Scene.setBackgroundColor(scene, 0x21272e);
 
     // adiciona grid de referência
     //Scene.addGridHelper(scene, 10, 10);
 
     // adiciona piso (floor) com altura
-    scene.add(Floor.createBoxFloor(10, 10, 0.4));
+    mainGroup.add(Floor.createBoxFloor(10, 10, 0.4, true));
 
     // iluminação
-    const light = Light.createDirectionalLight(-7.0, 6.0, -4.5);
-    const helper = Light.createDirectionalLightHelper(light, 5);
+    const ambientLight = Light.createAmbientLight(0xffffff, 0.5);
+    mainGroup.add(ambientLight);
+
+    const directionalLight = Light.createDirectionalLight(0, 5, 0, 0xff0000, 0.5);
+    
+    const dlHelper = Light.createDirectionalLightHelper(directionalLight, 3);
 
     // iluminar um objeto específico
-    //light.target = sphere;
+    //directionalLight.target = sphere;
 
-    scene.add(light);
-    scene.add(helper);
+    mainGroup.add(directionalLight, dlHelper);
 
-    scene.add(cube);
-    scene.add(sphere);
-
-
-
+    mainGroup.add(cube);
+    mainGroup.add(sphere);
 
     // Mostra controle de propriedades na tela (dat.GUI)
     const guiControls = new GuiControls();
     guiControls.addCameraFolder(camera);
-    guiControls.addLightFolder(light, helper);
+    guiControls.addLightFolder(ambientLight);
+    guiControls.addLightFolder(directionalLight, dlHelper);    
   }
 
   render() {

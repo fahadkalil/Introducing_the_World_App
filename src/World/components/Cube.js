@@ -9,8 +9,9 @@ class Cube {
     const material = new THREE.MeshPhongMaterial();
 
     // create a Mesh containing the geometry and material
-    const mesh = new THREE.Mesh(geometry, material);
-
+    const mesh = new THREE.Mesh(geometry, material);    
+    mesh.castShadow = true;
+    
     return mesh;
   }
 }
