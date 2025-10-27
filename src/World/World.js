@@ -60,7 +60,7 @@ class World {
     //Scene.addGridHelper(scene, 10, 10);
 
     // adiciona piso (floor) com altura
-    mainGroup.add(Floor.createBoxFloor(10, 10, 0.4, true));
+    mainGroup.add(Floor.createBoxFloor(10, 10, 0.4));
 
     // iluminação
     const ambientLight = Light.createAmbientLight(0xffffff, 0.5);
