@@ -33,9 +33,10 @@ class World {
     resizer = new Resizer(container, camera, renderer);
 
     // Permite controle da camera com mouse e teclado  
-    const controls = new OrbitControls(camera, renderer.domElement)
+    controls = new OrbitControls(camera, renderer.domElement);
     controls.listenToKeyEvents(window);
-
+    //controls.enableDamping = true; // suaviza o movimento
+    
     cube = Cube.create();
     cube.material.color.set(0x0000ff);
     cube.position.x = 0;
@@ -61,7 +62,13 @@ class World {
     scene.add(mainGroup);
 
     // adiciona grid de referência
-    //Scene.addGridHelper(scene, 10, 10);
+    Scene.addGridHelper(scene, 10, 10).helper.visible = false;
+
+    // adiciona eixos de referência
+    Scene.addAxesHelper(scene, 8).helper.visible = false;
+
+    // adiciona helper da câmera
+    Scene.addCameraHelper(scene, camera).helper.visible = false;
 
     // adiciona piso (floor) com altura
     mainGroup.add(Floor.createBoxFloor(10, 10, 0.4));
@@ -72,7 +79,9 @@ class World {
 
     const directionalLight = Light.createDirectionalLight(0, 5, 0, 0xff0000, 0.5);
     
+    // adiciona helper da iluminação
     const dlHelper = Light.createDirectionalLightHelper(directionalLight, 3);
+    dlHelper.visible = true;
 
     // iluminar um objeto específico
     //directionalLight.target = sphere;
@@ -84,13 +93,15 @@ class World {
 
     // Mostra controle de propriedades na tela (dat.GUI)
     const guiControls = new GuiControls();
-    guiControls.addCameraFolder(camera);
+    guiControls.addSceneFolder(scene);
+    guiControls.addCameraFolder(camera, controls);
     guiControls.addLightFolder(ambientLight);
     guiControls.addLightFolder(directionalLight, dlHelper);    
   }
 
   render() {
     renderer.setAnimationLoop(() => {
+      controls.update();
       renderer.render(scene, camera);
     });
   }

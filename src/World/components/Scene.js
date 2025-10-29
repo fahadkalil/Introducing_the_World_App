@@ -9,6 +9,7 @@ class Scene {
 
   static setBackgroundColor(scene, color = 'lightgray') {    
     scene.background = new THREE.Color(color);
+
     return scene;
   }
 
@@ -16,13 +17,15 @@ class Scene {
     let texture = new THREE.TextureLoader().load(url);
     texture.colorSpace = THREE.SRGBColorSpace;
     scene.background = texture;
+
     return scene;
   }
 
   static addGridHelper(scene, size = 10, divisions = 10) {    
-    scene.add(new THREE.GridHelper(size, divisions));
+    let helper = new THREE.GridHelper(size, divisions);
+    scene.add(helper);
 
-    return scene;
+    return { scene, helper };
   }
 
   static addFogLinear(scene, color = 0xFFFFFF, near = 1.0, far = 1000.0) {
@@ -35,6 +38,20 @@ class Scene {
     scene.fog = new THREE.FogExp2(color, density);
 
     return scene;
+  }
+
+  static addAxesHelper(scene, size = 8) {
+    let helper = new THREE.AxesHelper(size);        
+    scene.add(helper);
+
+    return { scene, helper };
+  }
+
+  static addCameraHelper(scene, camera) {
+    let helper = new THREE.CameraHelper(camera);        
+    scene.add(helper);
+
+    return { scene, helper };
   }
 }
 
