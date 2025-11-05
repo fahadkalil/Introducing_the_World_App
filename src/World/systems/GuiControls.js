@@ -10,27 +10,55 @@ class GuiControls {
         const sceneFolder = this.datGui.addFolder("Scene");
 
         const sceneObjectsFolder = sceneFolder.addFolder("Scene Objects");
+        //console.log(scene.children);
+        // traverse scene objects
+        for (const child of scene.children) {            
+            
+            if (child.isGroup) {
+                this.#getSceneObjectsFromGroup(child, sceneObjectsFolder);
+            } else {
+                if (child.constructor.name.endsWith("LightHelper")) return;
 
-        scene.traverse((object) => {
-            if (object === scene || object.parent.constructor.name.endsWith("LightHelper")) return;
-
-            if (!(object.parent instanceof THREE.Group)) {
-                sceneObjectsFolder.add(object, "visible").name(object.type + " (" + object.id + ")");
+                sceneObjectsFolder.add(child, "visible").name(child.type);
             }
-        });
+        }
+
         sceneObjectsFolder.open();
         sceneFolder.open();
 
         return sceneFolder;
     }
 
-    addCameraFolder(camera, orbitControls) {        
-        const initialCameraProperties = { 
-            position : camera.position.clone(),
-            fov : camera.fov,
-            aspect : camera.aspect,
-            near : camera.near,
-            far : camera.far
+    #getSceneObjectsFromGroup(groupObject, parentFolder) {
+        if (groupObject.children.length == 0) return;
+
+        let groupFolder = parentFolder;
+        if (groupObject.children.length > 1) {
+            groupFolder = parentFolder.addFolder(groupObject.type + " " + groupObject.id);
+        }
+
+        for (const child of groupObject.children) {
+            if (
+                child.constructor.name.endsWith("LightHelper") || 
+                child.constructor.name.endsWith("Light")
+            ) return;
+            
+            groupFolder.add(child, "visible").name(child.name + "|" + child.type);    
+            console.log("Adicionado => " + child.name + "|" + child.type);
+            if (child.children.length > 0) {                            
+                this.#getSceneObjectsFromGroup(child, groupFolder);
+            }
+        }
+
+    }
+
+    addCameraFolder(camera, orbitControls) {
+        const initialCameraProperties = {
+            position: camera.position.clone(),
+            fov: camera.fov,
+            aspect: camera.aspect,
+            near: camera.near,
+            far: camera.far
         };
 
         const cameraFolder = this.datGui.addFolder("Camera");
@@ -55,15 +83,15 @@ class GuiControls {
             resetCamera: function () {
                 camera.position.copy(initialCameraProperties.position);
                 camera.fov = initialCameraProperties.fov;
-                camera.aspect = initialCameraProperties.aspect;                
-                camera.lookAt(0, 0, 0);                
+                camera.aspect = initialCameraProperties.aspect;
+                camera.lookAt(0, 0, 0);
                 orbitControls.reset();
                 datGui.updateDisplay();
             },
         };
 
         cameraFolder.add(controls, 'resetCamera').name('Resetar Camera');
-                
+
         cameraFolder.open();
 
         return cameraFolder;

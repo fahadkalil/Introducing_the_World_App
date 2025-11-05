@@ -16,7 +16,7 @@ class Floor {
         return mesh;
     }
 
-    static createPlaneFloor(x = 10, y = 10,) {
+    static createPlaneFloor(x = 10, y = 10, receiveShadow = true) {
         const geometry = new THREE.PlaneGeometry(width, height);
 
         const material = new THREE.MeshBasicMaterial({
@@ -26,6 +26,8 @@ class Floor {
 
         const mesh = new THREE.Mesh(geometry, material);
         mesh.rotation.x = -Math.PI / 2; // Rotate -90 degrees around the X-axis
+
+        mesh.receiveShadow = true;
 
         return mesh;
     }

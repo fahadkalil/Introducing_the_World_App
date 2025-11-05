@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 class Scene {
   static create() {
@@ -52,6 +53,14 @@ class Scene {
     scene.add(helper);
 
     return { scene, helper };
+  }
+
+  static async addGLTFScene(scene, gltfFile) {
+    const loader = new GLTFLoader();
+    await loader.loadAsync(gltfFile).then((gltf) => {      
+      scene.add(gltf.scene);
+      return gltf;
+    });    
   }
 }
 

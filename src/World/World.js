@@ -14,6 +14,8 @@ import { Light } from './components/Light.js';
 import { Renderer } from './systems/Renderer.js';
 import { Resizer } from './systems/Resizer.js';
 
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
 
 // These variables are module-scoped: we cannot access them
 // from outside the module
@@ -36,25 +38,44 @@ class World {
     controls = new OrbitControls(camera, renderer.domElement);
     controls.listenToKeyEvents(window);
     //controls.enableDamping = true; // suaviza o movimento
-    
-    cube = Cube.create();
-    cube.material.color.set(0x0000ff);
-    cube.position.x = 0;
-    cube.position.y = 2;
-    cube.position.z = 0;
 
-    sphere = Sphere.create();
-    sphere.position.x = 0;
-    sphere.position.y = 1;
-    sphere.position.z = 4;
+    // Mostra controle de propriedades na tela (dat.GUI)
+    const guiControls = new GuiControls();
 
-    scene = Scene.create();  
+    // cube = Cube.create();
+    // cube.material.color.set(0x0000ff);
+    // cube.position.x = 0;
+    // cube.position.y = 2;
+    // cube.position.z = 0;
+
+    // sphere = Sphere.create();
+    // sphere.position.x = 0;
+    // sphere.position.y = 1;
+    // sphere.position.z = 4;
+
+    scene = Scene.create();
+
+    let pollBalls;
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load('src/World/assets/textures/billiard_balls/scene.gltf', (gltfScene) => {      
+      pollBalls = gltfScene.scene;
+      pollBalls.position.y = 0.9;
+      pollBalls.position.x = 0;
+      pollBalls.position.z = -4;
+      pollBalls.scale.set(0.02, 0.02, 0.02);        
+
+      let bola_branca = pollBalls.getObjectByName('Ball_Clube');
+      bola_branca.position.z = 200;
+      scene.add(pollBalls); 
+      guiControls.addSceneFolder(scene);
+    });  
     
+
     // Carregar imagem de fundo da cena    
-    Scene.setBackgroundTexture(scene, 'src/World/assets/textures/backgrounds/starry_night_sky.jpg');
+    //Scene.setBackgroundTexture(scene, 'src/World/assets/textures/backgrounds/space.jpg');
 
     // Setar cor de fundo da cena
-    //Scene.setBackgroundColor(scene, 0x21272e);
+    Scene.setBackgroundColor(scene, 0x21272e);
 
     // Agrupar elementos da cena para iluminação e sombras
     const mainGroup = new THREE.Group();
@@ -71,14 +92,16 @@ class World {
     Scene.addCameraHelper(scene, camera).helper.visible = false;
 
     // adiciona piso (floor) com altura
-    mainGroup.add(Floor.createBoxFloor(10, 10, 0.4));
+    const floor = Floor.createBoxFloor(10, 20, 1);
+    floor.material.color.set('lightgreen');
+    mainGroup.add(floor);
 
     // iluminação
     const ambientLight = Light.createAmbientLight(0xffffff, 0.5);
     mainGroup.add(ambientLight);
 
-    const directionalLight = Light.createDirectionalLight(0, 5, 0, 0xff0000, 0.5);
-    
+    const directionalLight = Light.createDirectionalLight(0, 5, 0, 0xffffff, 0.5);
+
     // adiciona helper da iluminação
     const dlHelper = Light.createDirectionalLightHelper(directionalLight, 3);
     dlHelper.visible = true;
@@ -88,23 +111,21 @@ class World {
 
     mainGroup.add(directionalLight, dlHelper);
 
-    mainGroup.add(cube);
-    mainGroup.add(sphere);
+    //mainGroup.add(cube);
+    //mainGroup.add(sphere);
 
-    // Mostra controle de propriedades na tela (dat.GUI)
-    const guiControls = new GuiControls();
-    guiControls.addSceneFolder(scene);
-    guiControls.addCameraFolder(camera, controls);
+    //guiControls.addCameraFolder(camera, controls);
     guiControls.addLightFolder(ambientLight);
-    guiControls.addLightFolder(directionalLight, dlHelper);    
+    guiControls.addLightFolder(directionalLight, dlHelper);
   }
 
   render() {
-    renderer.setAnimationLoop(() => {
-      controls.update();
+    renderer.setAnimationLoop(() => {      
+      //controls.update();
       renderer.render(scene, camera);
     });
   }
+
 }
 
 export { World };
