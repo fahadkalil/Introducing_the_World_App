@@ -16,7 +16,7 @@ class Floor {
         return mesh;
     }
 
-    static createPlaneFloor(x = 10, y = 10, receiveShadow = true) {
+    static createPlaneFloor(width = 10, height = 10, receiveShadow = true) {
         const geometry = new THREE.PlaneGeometry(width, height);
 
         const material = new THREE.MeshBasicMaterial({
