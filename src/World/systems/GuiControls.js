@@ -3,7 +3,10 @@ import * as THREE from 'three';
 
 class GuiControls {
     constructor(datGui) {
-        this.datGui = new GUI();
+        this.datGui = new GUI({
+            closeOnTop: true,
+            closed: true
+        });        
     }
 
     addSceneFolder(scene) {
