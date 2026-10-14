@@ -125,7 +125,8 @@ class World {
     mainGroup.add(cylinder);
     mainGroup.add(baseCircle); */
 
-    //const can = Can.create();
+    const can = Can.create();
+    
     const nescauCan = NescauCan.create();
     mainGroup.add(nescauCan.group);
 
