@@ -65,14 +65,11 @@ class SolidDisc {
             metalness: 0.0
         });
 
-        const coaster = new THREE.Mesh(geometry, material);
-        coaster.castShadow = true;
-        coaster.receiveShadow = true;
-
-        coaster.position.z = 5;
-        coaster.rotation.x = Math.PI; // em radianos
+        const solidDisc = new THREE.Mesh(geometry, material);
+        solidDisc.castShadow = true;
+        solidDisc.receiveShadow = true;
         
-        return coaster;
+        return solidDisc;
     }
 }
 

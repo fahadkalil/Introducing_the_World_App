@@ -73,7 +73,7 @@ class World {
     Scene.addGridHelper(scene, 40, 40).helper.visible = true;
 
     // adiciona eixos de referência
-    Scene.addAxesHelper(scene, 8).helper.visible = false;
+    Scene.addAxesHelper(scene, 32).helper.visible = true;
 
     // adiciona helper da câmera
     Scene.addCameraHelper(scene, camera).helper.visible = false;
@@ -82,6 +82,10 @@ class World {
     const nescauCan = NescauCan.create();
 
     const solidDisc = SolidDisc.create();
+    solidDisc.position.z = 5;
+    solidDisc.position.y = 10;
+
+    solidDisc.rotation.x = Math.PI; // em radianos
 
     mainGroup.add(nescauCan.group);
     mainGroup.add(solidDisc);
@@ -106,18 +110,18 @@ class World {
 
     mainGroup.add(directionalLight, dlHelper);   
     
-    //guiControls.addAxesHelper(scene)
     guiControls.addCameraFolder(camera, controls);
     guiControls.addLightFolder(ambientLight);
     guiControls.addLightFolder(directionalLight, dlHelper);
     guiControls.addSceneFolder(scene);
+    guiControls.datGui.open();
   }
 
   render() {
     renderer.setAnimationLoop(() => {        
       //mainGroup.rotation.y += 0.005;
 
-      //controls.update();
+      controls.update();
       renderer.render(scene, camera);
     });
   }

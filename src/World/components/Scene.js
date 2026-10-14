@@ -41,6 +41,16 @@ class Scene {
     return scene;
   }
 
+  /**
+   * AxesHelper: Eixos 3D de referência
+   *   Eixo X: Vermelho (red)
+   *   Eixo Y: Verde (green)
+   *   Eixo Z: Azul (blue)
+
+   * @param {*} scene 
+   * @param {*} size 
+   * @returns 
+   */
   static addAxesHelper(scene, size = 8) {
     let helper = new THREE.AxesHelper(size);        
     scene.add(helper);
