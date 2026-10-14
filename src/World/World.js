@@ -21,6 +21,8 @@ import { HDRLoader } from 'three/addons/loaders/HDRLoader.js';
 import { Can } from './assets/custom/Can.js'
 import { NescauCan } from './assets/custom/NescauCan.js'
 
+import { SolidDisc } from './assets/custom/SolidDisc.js'
+
 // These variables are module-scoped: we cannot access them
 // from outside the module
 let camera;
@@ -76,59 +78,13 @@ class World {
     // adiciona helper da câmera
     Scene.addCameraHelper(scene, camera).helper.visible = false;
 
-    /* const lidCylinderGeometry = new THREE.CylinderGeometry(2.1,2.1,0.25,20,40);    
-
-    const lidCylinderMaterial = new THREE.MeshLambertMaterial( { wireframe: false, color: 0xDCDFDE } );
-    const lidCylinder = new THREE.Mesh( lidCylinderGeometry, lidCylinderMaterial );
-    lidCylinder.castShadow = true;
-    lidCylinder.receiveShadow = true;
-
-    lidCylinder.position.y = 7.1;
-
-    const cylinderGeometry = new THREE.CylinderGeometry(2,2,7,40,40,true);
-    const cylinderMaterial = new THREE.MeshPhysicalMaterial( { 
-      wireframe: false, 
-      color: 0xFFFFFF,
-      metalness: 1.0,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1
-    } );    
-
-    const stampTexture = new THREE.TextureLoader().load('src/World/assets/textures/rotulo_nescau.png');    
-    stampTexture.generateMipmaps = false; 
-
-    const cylinderMaterial2 = new THREE.MeshStandardMaterial({ map: stampTexture, transparent: true });
-
-    const cylinder = new THREE.Mesh( cylinderGeometry, cylinderMaterial2 );
-    cylinder.castShadow = true;
-    cylinder.receiveShadow = true;
-
-    cylinder.position.x = 0;
-    cylinder.position.y = 3.5;
-    cylinder.position.z = 0;
-    
-    const baseCircleGeometry = new THREE.CircleGeometry(2.1, 40);
-    const baseCircleMaterial = new THREE.MeshPhysicalMaterial( { 
-      wireframe: false, 
-      color: 0xFFFFFF,
-      metalness: 1.0,
-      clearcoat: 1.0,
-      clearcoatRoughness: 0.1,
-      side: THREE.DoubleSide
-    } );
-    const baseCircle = new THREE.Mesh( baseCircleGeometry, baseCircleMaterial );
-    baseCircle.castShadow = true;
-    baseCircle.receiveShadow = true;    
-    baseCircle.rotation.x = -Math.PI / 2;
-       
-    mainGroup.add(lidCylinder)
-    mainGroup.add(cylinder);
-    mainGroup.add(baseCircle); */
-
-    const can = Can.create();
-    
+    const can = Can.create();    
     const nescauCan = NescauCan.create();
+
+    const solidDisc = SolidDisc.create();
+
     mainGroup.add(nescauCan.group);
+    mainGroup.add(solidDisc);
 
     // adiciona piso (floor) com altura
     //const floor = Floor.createPlaneFloor()
@@ -159,7 +115,7 @@ class World {
 
   render() {
     renderer.setAnimationLoop(() => {        
-      mainGroup.rotation.y += 0.005;
+      //mainGroup.rotation.y += 0.005;
 
       //controls.update();
       renderer.render(scene, camera);
