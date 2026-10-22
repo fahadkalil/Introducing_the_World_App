@@ -3,7 +3,7 @@ import * as THREE from 'three';
 class Camera {
   static create() {
     const camera = new THREE.PerspectiveCamera(
-      60, // fov = Field Of View
+      60, // fov = Field Of View | amplitude vertical da visão da câmera em graus
       1, // aspect ratio (dummy value)
       0.1, // near clipping plane
       50, // far clipping plane

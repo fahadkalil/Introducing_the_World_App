@@ -52,10 +52,14 @@ class World {
     // -- SCENE init --    
     camera.position.set(0, 15, 30);    
 
-    scene = Scene.create();
+    scene = Scene.create();    
+    Scene.addGridHelper(scene, 40, 40).helper.visible = true; // adiciona grid de referência
+    Scene.addAxesHelper(scene, 32).helper.visible = true; // adiciona eixos de referência
+    Scene.addCameraHelper(scene, camera).helper.visible = false; // adiciona helper da câmera
+
     //Scene.setBackgroundColor(scene, 0x21272e); 
 
-    // Load HDR environment for reflections
+    // carrega fundo com reflexos
     new HDRLoader()
       .load('src/World/assets/textures/backgrounds/quarry_01_1k.hdr', function (texture) {
         texture.mapping = THREE.EquirectangularReflectionMapping;
@@ -66,25 +70,17 @@ class World {
     (err) => { console.error('An error occurred loading the HDR:', err); }
     );
 
+    // define grupo de objetos principal
     mainGroup = new THREE.Group();
     scene.add(mainGroup);
 
-    // adiciona grid de referência
-    Scene.addGridHelper(scene, 40, 40).helper.visible = true;
-
-    // adiciona eixos de referência
-    Scene.addAxesHelper(scene, 32).helper.visible = true;
-
-    // adiciona helper da câmera
-    Scene.addCameraHelper(scene, camera).helper.visible = false;
-
-    const can = Can.create();    
+    // cria lata de nescau
     const nescauCan = NescauCan.create();
 
+    // cria disco sólido (similar a uma tampa)
     const solidDisc = SolidDisc.create();
     solidDisc.position.z = 5;
     solidDisc.position.y = 10;
-
     solidDisc.rotation.x = Math.PI; // em radianos
 
     mainGroup.add(nescauCan.group);
