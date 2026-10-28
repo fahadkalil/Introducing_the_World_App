@@ -51,7 +51,7 @@ class Exercicio_01 {
     scene.background = new THREE.Color("lightgray");
    
     // adiciona piso (floor) com altura
-    const floor = Floor.createPlaneFloor()
+    const floor = Floor.createPlaneFloor(50, 50);
     floor.material.color.set('darkgray');
     scene.add(floor);
 
@@ -60,9 +60,10 @@ class Exercicio_01 {
     scene.add(ambientLight);
 
     // objetos na cena!
-    const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
+    const geometry = new THREE.BoxGeometry( 5, 5, 5 );
+    const material = new THREE.MeshBasicMaterial( { color: 'blue', wireframe: true} );
     cube = new THREE.Mesh( geometry, material );
+    cube.position.set(-10, 5, 0);
     scene.add( cube );
     
     guiControls.addCameraFolder(camera, controls);
